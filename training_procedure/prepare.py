@@ -20,11 +20,14 @@ def prepare_model(self, dataset):
     if model_name in ["GCN"]:
         Model_Class = getattr(import_module("model.GCN"), model_name)
         model = Model_Class(config, config['hidden_dim'], dataset.nfeat, dataset.num_classes).cuda()
+    if model_name in ["GAT"]:
+        Model_Class = getattr(import_module("model.GAT"), model_name)
+        model = Model_Class(config, config['hidden_dim'], dataset.nfeat, dataset.num_classes).cuda()
     return model
 
 def load_data(self, idx):
     args = self.args
-    path = osp.join("/data1/zhuowei/datasets/", args.dataset)
+    path = osp.join("datasets/")
     dataset = DatasetLocal(args.dataset, "")
     dataset.dataset_source_folder_path = path
     dataset.mask = idx

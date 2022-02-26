@@ -24,10 +24,14 @@ GCN:
 
 GAT:
   epochs: 100
+  multirun: 10
+  dropout: 0.6
+  cuda: 0
+  feat_norm: True
   hidden_dim: 64
   multilabel: False
-  heads: 8
-  patience: 100
+  heads: 1
+  patience: 50
   seed: 1234
   lr: 0.005
   weight_decay: 0.0005
@@ -35,3 +39,5 @@ GAT:
   monitor: "val_acc"
   recache: False
   num_layers: 2
+  optimizer: "Adam"
+  activation: "leaky_relu"

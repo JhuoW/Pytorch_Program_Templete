@@ -118,3 +118,24 @@ if __name__ == "__main__":
         # logger.log ("Seed set to %d." % seeds[run_id])
 
         model,  report_dev_res, report_tes_res, loss = main(args, config, logger, run_id, dataset)
+
+        logger.log("%d th Run ended. Final Train Loss is %s" % (run_id , str(loss)))
+        logger.log("%d th Run ended. Best Epoch Valid Result is %s" % (run_id , str(report_dev_res)))
+        logger.log("%d th Run ended. Best Epoch Test  Result is %s" % (run_id , str(report_tes_res)))
+        
+        dev_ress.append(report_dev_res) 
+        tes_ress.append(report_tes_res)  
+    logger.add_line()
+    for metric in ["micro", "macro"]: # 2个metric
+        for result, name in zip( [dev_ress, tes_ress],
+                                 ['Dev', 'Test']):
+
+            now_res = [x[metric] for x in result]   
+
+            logger.log ("%s of %s : %s" % (metric , name , str([round(x,2) for x in now_res])))
+
+            avg = sum(now_res) / config['multirun']
+            std = (sum([(x - avg) ** 2 for x in now_res]) / config['multirun']) ** 0.5
+
+            logger.log("%s of %s : avg / std = %.2f / %.2f" % (metric , name , avg , std))
+        logger.log("")           
